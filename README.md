@@ -60,7 +60,9 @@ Update the MongoDB connection URL in server.js located in the root directory of 
 const DATABASE_URL = 'mongodb://localhost:27017/mern-stack-coding-challenge';
 
 4. **Start the Backend Server**
+   
  npm start
+
 This command will start the backend server at http://localhost:5500
 
 
