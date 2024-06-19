@@ -50,7 +50,7 @@ The backend is built with Node.js and Express.js. It connects to a MongoDB datab
    
    npm install
 
-3.**Configure MongoDB**
+3. **Configure MongoDB**
 
 Ensure MongoDB is installed and running. You can install MongoDB from MongoDB Download Center.
 
