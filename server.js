@@ -1,16 +1,16 @@
-// server.js
 const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const transactionRoutes = require('./routes/transactions');
 
 const app = express();
-const PORT = 3000;
+const PORT = 5500;
 const DATABASE_URL = 'mongodb://localhost:27017/mern-stack-coding-challenge';
 
 mongoose.connect(DATABASE_URL);
 
 app.use(bodyParser.json());
+app.use(express.static('public'));
 app.use('/api', transactionRoutes);
 
 app.listen(PORT, () => {

@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MERN Stack Coding Challenge</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+        }
+
+        h1,
+        h2 {
+            margin-top: 20px;
+        }
+
+        form {
+            margin-bottom: 20px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+
+        table,
+        th,
+        td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        .pagination {
+            margin-top: 10px;
+        }
+
+        .pagination a {
+            display: inline-block;
+            padding: 8px 12px;
+            background-color: #f2f2f2;
+            text-decoration: none;
+            color: #333;
+            border: 1px solid #ddd;
+            margin-right: 5px;
+        }
+
+        .pagination a.active {
+            background-color: #4CAF50;
+            color: white;
+        }
+
+        .pagination a:hover {
+            background-color: #ddd;
+        }
+
+        .statistics {
+            margin-top: 20px;
+        }
+
+        .error {
+            color: red;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>MERN Stack Coding Challenge</h1>
+
+    <h2>Initialize Database</h2>
+    <form id="initForm">
+        <button type="button" onclick="initializeDatabase()">Initialize Database</button>
+        <p id="initStatus"></p>
+    </form>
+
+    <h2>List of Transactions</h2>
+    <form id="searchForm">
+        <label for="search">Search:</label>
+        <input type="text" id="search" name="search">
+        <button type="submit">Search</button>
+    </form>
+    <div id="transactions"></div>
+    <div id="pagination" class="pagination"></div>
+
+    <h2>Statistics for Selected Month</h2>
+    <form id="statisticsForm">
+        <label for="month">Select Month:</label>
+        <select id="month" name="month">
+            <option value="January">January</option>
+            <option value="February">February</option>
+            <option value="March">March</option>
+            <option value="April">April</option>
+            <option value="May">May</option>
+            <option value="June">June</option>
+            <option value="July">July</option>
+            <option value="August">August</option>
+            <option value="September">September</option>
+            <option value="October">October</option>
+            <option value="November">November</option>
+            <option value="December">December</option>
+        </select>
+        <button type="button" onclick="fetchStatistics()">Get Statistics</button>
+    </form>
+    <div id="statistics" class="statistics"></div>
+
+    <script>
+
+        async function initializeDatabase() {
+            try {
+                const response = await fetch('/api/init');
+                if (!response.ok) {
+                    throw new Error('Failed to initialize database');
+                }
+                const data = await response.text();
+                document.getElementById('initStatus').textContent = data;
+            } catch (error) {
+                document.getElementById('initStatus').textContent = 'Error initializing database';
+                console.error('Error initializing database:', error);
+            }
+        }
+
+        async function fetchTransactions(page = 1, perPage = 10, search = '') {
+            try {
+                const response = await fetch(`/api/transactions?page=${page}&perPage=${perPage}&search=${search}`);
+                if (!response.ok) {
+                    throw new Error('Failed to fetch transactions');
+                }
+                const data = await response.json();
+                displayTransactions(data);
+            } catch (error) {
+                console.error('Error fetching transactions:', error);
+                document.getElementById('transactions').innerHTML = `<p class="error">Error fetching transactions</p>`;
+            }
+        }
+
+        function displayTransactions(data) {
+            const { transactions, count, page, perPage } = data;
+            const transactionsElement = document.getElementById('transactions');
+            transactionsElement.innerHTML = '';
+            if (transactions.length === 0) {
+                transactionsElement.innerHTML = '<p>No transactions found.</p>';
+                return;
+            }
+
+            const table = document.createElement('table');
+            const headerRow = table.insertRow();
+            ['Title', 'Description', 'Price', 'Date of Sale', 'Sold'].forEach(headerText => {
+                const th = document.createElement('th');
+                th.textContent = headerText;
+                headerRow.appendChild(th);
+            });
+
+            transactions.forEach(transaction => {
+                const row = table.insertRow();
+                ['title', 'description', 'price', 'dateOfSale', 'sold'].forEach(fieldName => {
+                    const cell = row.insertCell();
+                    cell.textContent = transaction[fieldName];
+                });
+            });
+
+            transactionsElement.appendChild(table);
+
+            const paginationElement = document.getElementById('pagination');
+            paginationElement.innerHTML = '';
+            const totalPages = Math.ceil(count / perPage);
+            for (let i = 1; i <= totalPages; i++) {
+                const link = document.createElement('a');
+                link.href = '#';
+                link.textContent = i;
+                if (i === page) {
+                    link.classList.add('active');
+                }
+                link.onclick = () => {
+                    fetchTransactions(i, perPage, document.getElementById('search').value.trim());
+                };
+                paginationElement.appendChild(link);
+            }
+        }
+
+        async function fetchStatistics() {
+            const month = document.getElementById('month').value;
+            try {
+                const response = await fetch(`/api/statistics?month=${month}`);
+                if (!response.ok) {
+                    throw new Error('Failed to fetch statistics');
+                }
+                const data = await response.json();
+                displayStatistics(data);
+            } catch (error) {
+                console.error('Error fetching statistics:', error);
+                document.getElementById('statistics').innerHTML = `<p class="error">Error fetching statistics</p>`;
+            }
+        }
+
+        function displayStatistics(data) {
+            const statisticsElement = document.getElementById('statistics');
+            statisticsElement.innerHTML = '';
+
+            const { totalAmount, soldItems, notSoldItems } = data;
+            const statisticsHtml = `
+                <p>Total Sale Amount: ${totalAmount}</p>
+                <p>Total Number of Sold Items: ${soldItems}</p>
+                <p>Total Number of Not Sold Items: ${notSoldItems}</p>
+            `;
+            statisticsElement.innerHTML = statisticsHtml;
+        }
+
+        document.getElementById('searchForm').addEventListener('submit', function (event) {
+            event.preventDefault();
+            fetchTransactions(1, 10, document.getElementById('search').value.trim());
+        });
+
+        fetchTransactions();
+
+        fetchStatistics();
+    </script>
+</body>
+
+</html>
