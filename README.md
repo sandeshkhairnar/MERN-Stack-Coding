@@ -1,4 +1,4 @@
-# MERN Stack Coding Challenge
+# MERN Stack Coding
 This project implements a backend and frontend solution for a MERN (MongoDB, Express.js, React.js, Node.js) stack coding challenge. It includes APIs to initialize the database, list transactions with search and pagination, and fetch statistics for a selected month.
 
 ## Backend
