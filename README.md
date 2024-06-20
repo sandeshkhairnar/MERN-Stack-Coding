@@ -63,10 +63,10 @@ The backend is built with Node.js and Express.js. It connects to a MongoDB datab
   
        npm start
 
--This command will start the backend server at http://localhost:5500
+   - This command will start the backend server at   http://localhost:5500
 
 
 
 ### Run:
 
-http://localhost:5500/
+   http://localhost:5500/
