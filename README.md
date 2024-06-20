@@ -43,14 +43,14 @@ The backend is built with Node.js and Express.js. It connects to a MongoDB datab
 
 1. **Clone the Repository**
 
-   ```bash
+      ```bash
    git clone https://github.com/sandeshkhairnar/MERN-Stack-Coding.git
 
    git clone git@github.com:sandeshkhairnar/MERN-Stack-Coding.git
 
 2. **Install Dependencies**
    
-   npm install
+   `npm install'
 
 3. **Configure MongoDB**
 
