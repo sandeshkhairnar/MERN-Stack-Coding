@@ -54,10 +54,10 @@ The backend is built with Node.js and Express.js. It connects to a MongoDB datab
 
 4. **Configure MongoDB**
 
--Ensure MongoDB is installed and running. You can install MongoDB from MongoDB Download Center.
+      - Ensure MongoDB is installed and running. You can install MongoDB from MongoDB Download Center.
 
--Update the MongoDB connection URL in server.js located in the root directory of the project:
- const DATABASE_URL = 'mongodb://localhost:27017/mern-stack-coding-challenge';
+      - Update the MongoDB connection URL in server.js located in the root directory of the project:
+        const DATABASE_URL = 'mongodb://localhost:27017/mern-stack-coding-challenge';
 
 4. **Start the Backend Server**
   
