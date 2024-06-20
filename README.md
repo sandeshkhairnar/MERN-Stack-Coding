@@ -49,10 +49,11 @@ The backend is built with Node.js and Express.js. It connects to a MongoDB datab
    git clone git@github.com:sandeshkhairnar/MERN-Stack-Coding.git
 
 2. **Install Dependencies**
-   
-   `npm install'
 
-3. **Configure MongoDB**
+        ```bash
+       npm install
+
+4. **Configure MongoDB**
 
 -Ensure MongoDB is installed and running. You can install MongoDB from MongoDB Download Center.
 
@@ -60,8 +61,9 @@ The backend is built with Node.js and Express.js. It connects to a MongoDB datab
  const DATABASE_URL = 'mongodb://localhost:27017/mern-stack-coding-challenge';
 
 4. **Start the Backend Server**
-   
- npm start
+         ```bash
+  
+       npm start
 
 -This command will start the backend server at http://localhost:5500
 
